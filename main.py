@@ -71,9 +71,10 @@ class Game:
             if self.action == "stay":
                 pass
             
-            if "move" in self.action:
-                x, y = self.action["move"]
-                self.player.move(dx=x, dy=y)
+            # if "move" in self.action:
+            #     x, y = self.action["move"]
+            
+            #     self.player.move(dx=x, dy=y)
             
     def update(self):
         # Game loop - update portion of the game loop

@@ -17,7 +17,7 @@ class Player(pg.sprite.Sprite):
 
         self.vx, self.vy = 0, 0
 
-    def accelerate(self):
+    def move(self):
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
@@ -32,26 +32,49 @@ class Player(pg.sprite.Sprite):
             self.vx *= .7071
             self.vy *= .7071
 
-    def move(self, dx=0, dy=0):
-        if not self.collision(dx, dy):
-            self.x += dx
-            self.y += dy
+    # def move(self, dx=0, dy=0):             - for simple movement
+         # if not self.collision(dx, dy):
+     #     self.x += dx
+        #    self.y += dy
 
-    def collision(self, dx=0, dy=0):
-        for wall in self.game.walls:
-            if wall.x == self.x + dx and wall.y == self.y + dy:
-                return True
-        return False
+    def collision(self, dir):
+        # for wall in self.game.walls:
+        #     if wall.x == self.x + dx and wall.y == self.y + dy:
+        #         return True
+        # return False
+
+        if dir == 'x':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.vx > 0: # sprite moving to the right
+                    self.x = hits[0].rect.left - self.rect.width
+                if self.vx < 0: # sprite moving to the left
+                    self.x = hits[0].rect.right
+                self.vx = 0                         #stop moving
+                self.rect.x = self.x
+        if dir == 'y':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.vy > 0: # sprite moving down
+                    self.y = hits[0].rect.top - self.rect.width
+                if self.vy < 0: # sprite moving up
+                    self.y = hits[0].rect.bottom
+                self.vy = 0                         #stop moving
+                self.rect.y = self.y
         
 
     def update(self):
         # self.rect.x = self.x * TILESIZE              - for simple by tile movement
         # self.rect.y = self.y * TILESIZE
 
-        self.accelerate()
+        self.move()
         self.x += self.vx * self.game.dt    # the speed
         self.y += self.vy * self.game.dt
-        self.rect.topleft = (self.x, self.y)
+        self.rect.x = self.x
+        self.collision('x')
+        self.rect.y = self.y
+        self.collision('y')
+
 
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):

@@ -8,14 +8,14 @@ def player_input(key):
         button = key.key                # change ifs to elifs to prevent diagonal movement
         if button == pg.K_ESCAPE:
             return "exit"
-        if button == pg.K_LEFT:
-            return {"move": (-1, 0)}
-        if button == pg.K_RIGHT:
-            return {"move": (1, 0)}
-        if button == pg.K_UP:
-            return {"move": (0, -1)}
-        if button == pg.K_DOWN:
-            return {"move": (0, 1)}
+    #     if button == pg.K_LEFT:
+    #         return {"move": (-1, 0)}
+    #     if button == pg.K_RIGHT:
+    #         return {"move": (1, 0)}
+    #     if button == pg.K_UP:
+    #         return {"move": (0, -1)}
+    #     if button == pg.K_DOWN:
+    #         return {"move": (0, 1)}
 
     else:
         return "stay"

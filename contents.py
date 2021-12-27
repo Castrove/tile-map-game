@@ -18,16 +18,19 @@ class Player(pg.sprite.Sprite):
         self.vx, self.vy = 0, 0
 
     def move(self):
+        boost = 0
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
+        if keys[pg.K_LSHIFT]:
+            boost = RUNNING_SPEED
         if keys[pg.K_LEFT]:
-            self.vx = -PLAYER_SPEED
+            self.vx = -(PLAYER_SPEED + boost)
         if keys[pg.K_RIGHT]:
-            self.vx = PLAYER_SPEED
+            self.vx = (PLAYER_SPEED + boost)
         if keys[pg.K_UP]:
-            self.vy = -PLAYER_SPEED
+            self.vy = -(PLAYER_SPEED + boost)
         if keys[pg.K_DOWN]:
-            self.vy= PLAYER_SPEED
+            self.vy= (PLAYER_SPEED + boost)
         if self.vx != 0 and self.vy != 0:  # prevents faster diagonals
             self.vx *= .7071
             self.vy *= .7071

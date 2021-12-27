@@ -12,8 +12,8 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
 
         self.vx, self.vy = 0, 0
 
@@ -28,6 +28,9 @@ class Player(pg.sprite.Sprite):
             self.vy = -PLAYER_SPEED
         if keys[pg.K_DOWN]:
             self.vy= PLAYER_SPEED
+        if self.vx != 0 and self.vy != 0:  # prevents faster diagonals
+            self.vx *= .7071
+            self.vy *= .7071
 
     def move(self, dx=0, dy=0):
         if not self.collision(dx, dy):

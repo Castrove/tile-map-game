@@ -5,7 +5,7 @@ def player_input(key):
         return "exit"
         
     if key.type == pg.KEYDOWN:          # change number for choppy effect
-        button = key.key
+        button = key.key                # change ifs to elifs to prevent diagonal movement
         if button == pg.K_ESCAPE:
             return "exit"
         if button == pg.K_LEFT:

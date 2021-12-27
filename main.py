@@ -2,6 +2,7 @@ import sys, random
 from os import path
 from typing import ClassVar
 import pygame as pg
+from input import player_input
 from settings import *
 from contents import *
 
@@ -63,22 +64,21 @@ class Game:
     def events(self):
         # Game loop - catch all events here
         for event in pg.event.get():
-            if event.type == pg.QUIT:           # for the close button in window
-                if self.playing:
-                    self.playing = False        # stops game; starts new game
-                    self.running = False          # stops program
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    self.quit()
-                if event.key == pg.K_LEFT:
-                    self.player.move(dx=-1)
-                if event.key == pg.K_RIGHT:
-                    self.player.move(dx=1)
-                if event.key == pg.K_UP:
-                    self.player.move(dy=-1)
-                if event.key == pg.K_DOWN:
-                    self.player.move(dy=1)
+            self.action = player_input(event)
+            print(self.action)
+            print(type(self.action))
 
+            if self.action == "exit":
+                print(self.action)
+                self.playing = False      # stops game; starts new game
+                self.running = False      # stops program
+            if self.action == "stay":
+                pass
+            if "move" in self.action:
+                x, y = self.action["move"]
+                print(x, y)
+                self.player.move(dx=x, dy=y)
+            
     def update(self):
         # Game loop - update portion of the game loop
         self.all_sprites.update()

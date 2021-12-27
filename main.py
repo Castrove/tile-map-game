@@ -48,10 +48,9 @@ class Game:
 
     def run(self):
         # Starts game loop - set self.playing = False to end the game
-        self.clock.tick(FPS)
         self.playing = True
         while self.playing:
-            self.clock.tick(FPS)
+            self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
@@ -65,18 +64,15 @@ class Game:
         # Game loop - catch all events here
         for event in pg.event.get():
             self.action = player_input(event)
-            print(self.action)
-            print(type(self.action))
 
             if self.action == "exit":
-                print(self.action)
                 self.playing = False      # stops game; starts new game
-                self.running = False      # stops program
+                self.running = False   # stops program
             if self.action == "stay":
                 pass
+            
             if "move" in self.action:
                 x, y = self.action["move"]
-                print(x, y)
                 self.player.move(dx=x, dy=y)
             
     def update(self):

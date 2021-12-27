@@ -9,12 +9,25 @@ class Player(pg.sprite.Sprite):
         self._layer = PLAYER_LAYER
         self.groups = game.all_sprites  # adding player to all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)    # hard to use super() on classes from imported modules
-        
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
+
+        self.vx, self.vy = 0, 0
+
+    def accelerate(self):
+        self.vx, self.vy = 0, 0
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT]:
+            self.vx = -PLAYER_SPEED
+        if keys[pg.K_RIGHT]:
+            self.vx = PLAYER_SPEED
+        if keys[pg.K_UP]:
+            self.vy = -PLAYER_SPEED
+        if keys[pg.K_DOWN]:
+            self.vy= PLAYER_SPEED
 
     def move(self, dx=0, dy=0):
         if not self.collision(dx, dy):
@@ -29,8 +42,13 @@ class Player(pg.sprite.Sprite):
         
 
     def update(self):
-        self.rect.x = self.x * TILESIZE
-        self.rect.y = self.y * TILESIZE
+        # self.rect.x = self.x * TILESIZE              - for simple by tile movement
+        # self.rect.y = self.y * TILESIZE
+
+        self.accelerate()
+        self.x += self.vx * self.game.dt    # the speed
+        self.y += self.vy * self.game.dt
+        self.rect.topleft = (self.x, self.y)
 
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):

@@ -4,7 +4,7 @@ def player_input(key):
     if key.type == pg.QUIT:           # for the close button in window
         return "exit"
         
-    if key.type == pg.KEYDOWN:
+    if key.type == pg.KEYDOWN:          # change number for choppy effect
         button = key.key
         if button == pg.K_ESCAPE:
             return "exit"

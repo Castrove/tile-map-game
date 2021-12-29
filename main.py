@@ -1,8 +1,7 @@
 import sys, random
 from os import path
-from typing import ClassVar
 import pygame as pg
-from input import player_input
+from input import *
 from settings import *
 from contents import *
 from tilemap import *
@@ -81,13 +80,18 @@ class Game:
     def events(self):
         # Game loop - catch all events here
         for event in pg.event.get():
-            self.action = player_input(event)
+            input = Inputs(self, event)
+            print(str(input))
+            self.action = input.events()
 
-            if self.action == "exit":
-                self.playing = False      # stops game; starts new game
-                self.running = False   # stops program
-            if self.action == "stay":
-                pass
+            # if self.action == "exit":
+            #     self.playing = False      # stops game; starts new game
+            #     self.running = False   # stops program
+            # if self.action == "jump":
+            #     print("jump")
+            #     self.player.jumping = True
+            # if self.action == "stay":
+            #     pass
 
         for portal in Door.portals:
             

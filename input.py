@@ -47,8 +47,6 @@ class Inputs():
             print("landed") 
             pg.time.set_timer(JUMP_TIMER, 0)
             self.game.player.jumping = False
-
-
             
         if self.key.type == pg.KEYDOWN:          
             button = self.key.key   

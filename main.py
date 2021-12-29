@@ -57,7 +57,8 @@ class Game:
                 elif tile == '0':
                     self.entrance = Door(self, col, row, "entrance")
                 elif tile == "X":
-                    self.exit = Door(self, col, row, "exit")   
+                    self.exit = Door(self, col, row, "exit")  
+                 
 
         self.camera = Camera(self.map.width, self.map.height)   # spawns camera   
 

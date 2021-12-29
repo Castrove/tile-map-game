@@ -109,11 +109,12 @@ class Ledge(Block):
     def __init__(self, game, x, y, facing):
         super().__init__(game, x, y)
         self.face = facing
+
         
     def jump_over(self):
         if self.game.player.jumping == True:
             self.image.fill(BLACK)
-            self.image = pg.draw.circle(self.image, GREEN, (TILESIZE, TILESIZE), 5)
+            
         else:
             self.image = pg.Surface((TILESIZE, TILESIZE))
             self.image.fill(GREEN)

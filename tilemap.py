@@ -26,7 +26,7 @@ class Map:
 
         for row, tiles in enumerate(self.data):     # Make sure tile map has no blank line at the start to prevent issues ! ! ! !
             for col, tile in enumerate(tiles):
-                if tile == '1':
+                if tile == '#':
                     game.block = Block(game, col, row)
                 elif tile == 'P':
                     game.player = Player(game, col, row)
@@ -34,6 +34,14 @@ class Map:
                     game.entrance = Portal(game, col, row, "entrance")
                 elif tile == "X":
                     game.exit = Portal(game, col, row, "exit")  
+                elif tile == "/":
+                    game.edge = Ledge(game, col, row, "left")
+                elif tile == "\\":
+                    game.edge = Ledge(game, col, row, "right")
+                elif tile == "=":
+                    game.edge = Ledge(game, col, row, "up")
+                elif tile == "_":
+                    game.edge = Ledge(game, col, row, "down")
     
 class Camera:
     def __init__(self, width, height):

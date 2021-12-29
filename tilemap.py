@@ -1,6 +1,6 @@
 import pygame as pg
 
-from settings import TILESIZE
+from contents import *
 from settings import *
 
 class Map:
@@ -15,6 +15,25 @@ class Map:
         self.tileheight = len(self.data)            # height of map by tile
         self.width = self.tilewidth * TILESIZE      # by pixel
         self.height = self.tileheight * TILESIZE    # by pixel
+
+    def render(self, game):                 # renders the map for the main program
+        # initialize all variables and do all the setup for a new game
+        game.all_sprites = pg.sprite.LayeredUpdates()
+        game.blocks = pg.sprite.LayeredUpdates()
+        game.portals = pg.sprite.LayeredUpdates()
+        game.enemies = pg.sprite.LayeredUpdates()
+        game.attacks = pg.sprite.LayeredUpdates()
+
+        for row, tiles in enumerate(self.data):     # Make sure tile map has no blank line at the start to prevent issues ! ! ! !
+            for col, tile in enumerate(tiles):
+                if tile == '1':
+                    game.block = Block(game, col, row)
+                elif tile == 'P':
+                    game.player = Player(game, col, row)
+                elif tile == '0':
+                    game.entrance = Portal(game, col, row, "entrance")
+                elif tile == "X":
+                    game.exit = Portal(game, col, row, "exit")  
     
 class Camera:
     def __init__(self, width, height):

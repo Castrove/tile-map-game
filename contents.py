@@ -41,7 +41,7 @@ class Player(pg.sprite.Sprite):
 
     def collision(self, dir):
         if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            hits = pg.sprite.spritecollide(self, self.game.blocks, False)
             if hits:
                 if self.vel.x > 0: # sprite moving to the right
                     self.pos.x = hits[0].rect.left - self.rect.width
@@ -50,7 +50,7 @@ class Player(pg.sprite.Sprite):
                 self.vel.x = 0                         #stop moving
                 self.rect.x = self.pos.x
 
-            enter = pg.sprite.spritecollide(self, self.game.entrances, False)
+            enter = pg.sprite.spritecollide(self, self.game.portals, False)
             if enter:
                 self.rect.x = enter[0].rect.left
                 self.rect.y = enter[0].rect.top
@@ -58,7 +58,7 @@ class Player(pg.sprite.Sprite):
 
             
         if dir == 'y':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            hits = pg.sprite.spritecollide(self, self.game.blocks, False)
             if hits:
                 if self.vel.y > 0: # sprite moving down
                     self.pos.y = hits[0].rect.top - self.rect.width
@@ -67,7 +67,7 @@ class Player(pg.sprite.Sprite):
                 self.vel.y = 0                         #stop moving
                 self.rect.y = self.pos.y
 
-            enter = pg.sprite.spritecollide(self, self.game.entrances, False)
+            enter = pg.sprite.spritecollide(self, self.game.portals, False)
             if enter:
                 self.rect.x = enter[0].rect.left
                 self.rect.y = enter[0].rect.top
@@ -91,9 +91,9 @@ class Player(pg.sprite.Sprite):
         self.collision('y')
 
 #================================================================================================================================
-class Wall(pg.sprite.Sprite):
+class Block(pg.sprite.Sprite):                      # default block is a wall
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.walls # game.walls for wall objects
+        self.groups = game.all_sprites, game.blocks # game.blocks for blocks objects
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -105,7 +105,7 @@ class Wall(pg.sprite.Sprite):
         self.rect.y = y * TILESIZE
 
 
-class Ledge(Wall):
+class Ledge(Block):
     def __init__(self, game, x, y, facing):
         super().__init__(game, x, y)
         self.face = facing
@@ -123,12 +123,12 @@ class Ledge(Wall):
         self.jump_over()
         
 #================================================================================================================================
-class Door(pg.sprite.Sprite):
+class Portal(pg.sprite.Sprite):
     portals = []
 
     def __init__(self, game, x, y, mode):
         self.game = game
-        self.groups = game.all_sprites, game.entrances
+        self.groups = game.all_sprites, game.portals
         pg.sprite.Sprite.__init__(self, self.groups)
         self.image = pg.Surface((TILESIZE, TILESIZE))
         self.rect = self.image.get_rect()

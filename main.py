@@ -19,11 +19,8 @@ class Game:
         self.level = 1
         self.prev_level = self.level
 
-        # pg.key.set_repeat(300,100) # by millisecond; repeats the key pressed every interval
-
 
     def load_data(self):    # load map
-        
         # game_folder = path.dirname(__file__)
         map_file = f"map{self.level}.txt"
         game_folder = [path.dirname(__file__),"assets","map",map_file]  
@@ -37,36 +34,19 @@ class Game:
             game_folder = [path.dirname(__file__),"assets","map",map_file]  
 
             
-        self.map = Map(path.join(*game_folder))
+        self.map = Map(path.join(*game_folder))     # stores the info in map object
     
 
     def new(self):
-        # initialize all variables and do all the setup for a new game
-        self.all_sprites = pg.sprite.LayeredUpdates()
-        self.walls = pg.sprite.LayeredUpdates()
-        self.entrances = pg.sprite.LayeredUpdates()
-        self.enemies = pg.sprite.LayeredUpdates()
-        self.attacks = pg.sprite.LayeredUpdates()
-
         #spawn wall
-        self.load_data()
-        Door.portals.clear()
+        self.load_data()            # prepares the map
+        Portal.portals.clear()      # resets the active portals
 
-        for row, tiles in enumerate(self.map.data):     # Make sure tile map has no blank line at the start to prevent issues ! ! ! !
-            for col, tile in enumerate(tiles):
-                if tile == '1':
-                    Wall(self, col, row)
-                elif tile == 'P':
-                    self.player = Player(self, col, row)
-                elif tile == '0':
-                    self.entrance = Door(self, col, row, "entrance")
-                elif tile == "X":
-                    self.exit = Door(self, col, row, "exit")  
-                 
-
+        self.map.render(self)       # creates the map
         self.camera = Camera(self.map.width, self.map.height)   # spawns camera   
 
         self.run()
+
 
     def run(self):
         # Starts game loop - set self.playing = False to end the game
@@ -79,8 +59,10 @@ class Game:
         # insert confirmation option to quit before closing program
         # insert self.running = False here
 
+
     def quit(self):
         pass
+
 
     def events(self):
         # Game loop - catch all events here
@@ -88,8 +70,7 @@ class Game:
             input = Inputs(self, event)
             self.action = input.events()
 
-        for portal in Door.portals:
-            
+        for portal in Portal.portals:    
             increment = portal.transport(self.player.in_portal, self.player)
             
             if increment == None:
@@ -98,11 +79,13 @@ class Game:
             self.prev_level = self.level
             self.level += increment
             self.new()
-                    
+
+
     def update(self):
         # Game loop - update portion of the game loop
         self.all_sprites.update()
         self.camera.update(self.player)
+
 
     def draw_grid(self):
         for x in range(self.camera.x, WIDTH, TILESIZE):
@@ -125,8 +108,10 @@ class Game:
     def start_win(self):
         pass
 
+
     def game_over(self):
         pass
+
 
 # create the game object
 g = Game()

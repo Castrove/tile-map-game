@@ -1,6 +1,5 @@
 import sys, random
 from os import path
-from typing import ClassVar
 import pygame as pg
 from input import player_input
 from settings import *
@@ -24,17 +23,21 @@ class Game:
 
 
     def load_data(self):    # load map
-
-        game_folder = path.dirname(__file__)
+        
+        # game_folder = path.dirname(__file__)
         map_file = f"map{self.level}.txt"
+        game_folder = [path.dirname(__file__),"assets","map",map_file]  
+
 
         print("prev:", self.prev_level)
-        if not path.isfile(map_file):
+        if not path.isfile(path.join(*game_folder)):
 
             self.level = self.prev_level
             map_file = f"map{self.level}.txt"
+            game_folder = [path.dirname(__file__),"assets","map",map_file]  
+
             
-        self.map = Map(path.join(game_folder, map_file))
+        self.map = Map(path.join(*game_folder))
     
 
     def new(self):

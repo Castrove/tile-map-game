@@ -102,7 +102,7 @@ class Player(pg.sprite.Sprite):
     def update(self):
         # self.rect.x = self.x * TILESIZE              - for simple by tile movement
         # self.rect.y = self.y * TILESIZE
-        
+
         # self.jump()
         self.move()
         self.pos += self.vel * self.game.dt # the speed
@@ -144,10 +144,6 @@ class Door(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-
-    def __repr__(self):
-        rep = self.mode
-        return rep
 
     def activated(self, player):
         if player.rect.x == self.rect.x and player.rect.y == self.rect.y:

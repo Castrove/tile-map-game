@@ -81,17 +81,7 @@ class Game:
         # Game loop - catch all events here
         for event in pg.event.get():
             input = Inputs(self, event)
-            print(str(input))
             self.action = input.events()
-
-            # if self.action == "exit":
-            #     self.playing = False      # stops game; starts new game
-            #     self.running = False   # stops program
-            # if self.action == "jump":
-            #     print("jump")
-            #     self.player.jumping = True
-            # if self.action == "stay":
-            #     pass
 
         for portal in Door.portals:
             

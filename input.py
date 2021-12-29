@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+from contents import *
 
 # def player_input(key):
 #     if key.type == pg.QUIT:           # for the close button in window
@@ -45,6 +46,8 @@ class Inputs():
         if self.key.type == JUMP_TIMER:
             print("landed") 
             pg.time.set_timer(JUMP_TIMER, 0)
+            self.game.player.jumping = False
+
 
             
         if self.key.type == pg.KEYDOWN:          
@@ -57,7 +60,7 @@ class Inputs():
             if button == pg.K_SPACE:
                 pg.time.set_timer(JUMP_TIMER, JUMP_DELAY)
                 print("jumped")
-                # self.game.player.  
+                self.game.player.jumping = True  
                     
 
         else:

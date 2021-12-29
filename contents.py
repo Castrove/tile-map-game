@@ -84,17 +84,11 @@ class Player(pg.sprite.Sprite):
                 self.in_portal = True
 
     
-    # def jump(self):
-
-        
-
-    #     if self.jumping:
-    #         pg.time.set_timer(timer, delay)
-
-            
-    #         self.image.fill(BLUE)
-    #         self.jumping == False
-    #         self.image.fill(YELLOW)
+    def jump(self):
+        if self.jumping:
+            self.image.fill(BLUE)
+        else:
+            self.image.fill(YELLOW)
 
 
         
@@ -103,7 +97,7 @@ class Player(pg.sprite.Sprite):
         # self.rect.x = self.x * TILESIZE              - for simple by tile movement
         # self.rect.y = self.y * TILESIZE
 
-        # self.jump()
+        self.jump()
         self.move()
         self.pos += self.vel * self.game.dt # the speed
         self.rect.x = self.pos.x

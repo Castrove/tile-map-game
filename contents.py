@@ -1,4 +1,4 @@
-from pygame import rect
+from pygame import rect                                # TODO: Separate object and people/mob/creature/plant classes into modules 
 from settings import *
 import pygame as pg
 
@@ -15,12 +15,12 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)                # velocity vector instead of vx and vy 
         self.pos = vec(x, y) * TILESIZE     # position vector instead of x and y
 
-        # self.vx, self.vy = 0, 0
-        self.in_portal = False
+        self.in_portal = False                 # player status
+        self.jumping = False
+
 
     def move(self):
         boost = 0
-        # self.vx, self.vy = 0, 0
         self.vel = vec(0, 0)                # velocity doesn't accumulate, preventing unwanted movement 
 
         keys = pg.key.get_pressed()
@@ -38,17 +38,8 @@ class Player(pg.sprite.Sprite):
             self.vel.x *= .7071
             self.vel.y *= .7071
 
-    # def move(self, dx=0, dy=0):             - for simple movement
-         # if not self.collision(dx, dy):
-     #     self.x += dx
-        #    self.y += dy
 
     def collision(self, dir):
-        # for wall in self.game.walls:
-        #     if wall.x == self.x + dx and wall.y == self.y + dy:
-        #         return True
-        # return False
-
         if dir == 'x':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
@@ -82,12 +73,16 @@ class Player(pg.sprite.Sprite):
                 self.rect.y = enter[0].rect.top
                 self.in_portal = True
 
-
+    
+    def jump(self):
+        if self.jumping:
+            self.image.fill(BLUE)
+        else:
+            self.image.fill(YELLOW)
         
 
     def update(self):
-        # self.rect.x = self.x * TILESIZE              - for simple by tile movement
-        # self.rect.y = self.y * TILESIZE
+        self.jump()
         self.move()
         self.pos += self.vel * self.game.dt # the speed
         self.rect.x = self.pos.x
@@ -95,7 +90,7 @@ class Player(pg.sprite.Sprite):
         self.rect.y = self.pos.y
         self.collision('y')
 
-
+#================================================================================================================================
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls # game.walls for wall objects
@@ -109,6 +104,25 @@ class Wall(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+
+class Ledge(Wall):
+    def __init__(self, game, x, y, facing):
+        super().__init__(game, x, y)
+        self.face = facing
+        
+    def jump_over(self):
+        if self.game.player.jumping == True:
+            self.image.fill(BLACK)
+            self.image = pg.draw.circle(self.image, GREEN, (TILESIZE, TILESIZE), 5)
+        else:
+            self.image = pg.Surface((TILESIZE, TILESIZE))
+            self.image.fill(GREEN)
+
+        
+    def update(self):
+        self.jump_over()
+        
+#================================================================================================================================
 class Door(pg.sprite.Sprite):
     portals = []
 
@@ -129,17 +143,12 @@ class Door(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
-    def __repr__(self):
-        rep = self.mode
-        return rep
-
     def activated(self, player):
         if player.rect.x == self.rect.x and player.rect.y == self.rect.y:
             return True
 
     def transport(self, status, player):
         
-        # if self.mode == "entrance" and status:
         if self.mode == "entrance" and status and self.activated(player):
             return 1
         elif self.mode == "exit" and status and self.activated(player):
@@ -147,23 +156,3 @@ class Door(pg.sprite.Sprite):
         else: 
             pass
     
-    
-        
-
-    # def detect_player(self, status):
-    #     if status:
-    #         return True
-    
-    # def update(self):
-    #     # self.detect_player(Player.in_portal)
-    #     print(Player.in_portal)
-
-    # def player_collide(self, player):
-    #     enter = pg.sprite.spritecollide(player, self.game.entrances, False)
-    #     if enter:
-    #         player.rect.x = self.x
-    #         player.rect.y = self.y
-    #         print("enter")
-
-    # def update(self):
-    #     player_collide()

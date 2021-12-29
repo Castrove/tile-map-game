@@ -1,7 +1,7 @@
 import sys, random
 from os import path
 import pygame as pg
-from input import player_input
+from input import *
 from settings import *
 from contents import *
 from tilemap import *
@@ -61,7 +61,8 @@ class Game:
                 elif tile == '0':
                     self.entrance = Door(self, col, row, "entrance")
                 elif tile == "X":
-                    self.exit = Door(self, col, row, "exit")   
+                    self.exit = Door(self, col, row, "exit")  
+                 
 
         self.camera = Camera(self.map.width, self.map.height)   # spawns camera   
 
@@ -84,13 +85,8 @@ class Game:
     def events(self):
         # Game loop - catch all events here
         for event in pg.event.get():
-            self.action = player_input(event)
-
-            if self.action == "exit":
-                self.playing = False      # stops game; starts new game
-                self.running = False   # stops program
-            if self.action == "stay":
-                pass
+            input = Inputs(self, event)
+            self.action = input.events()
 
         for portal in Door.portals:
             

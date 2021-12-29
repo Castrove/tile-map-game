@@ -39,39 +39,39 @@ class Player(pg.sprite.Sprite):
             self.vel.y *= .7071
 
 
-    def collision(self, dir):
-        if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game.blocks, False)
-            if hits:
-                if self.vel.x > 0: # sprite moving to the right
-                    self.pos.x = hits[0].rect.left - self.rect.width
-                if self.vel.x < 0: # sprite moving to the left
-                    self.pos.x = hits[0].rect.right
-                self.vel.x = 0                         #stop moving
-                self.rect.x = self.pos.x
+    # def collision(self, dir):
+    #     if dir == 'x':
+    #         hits = pg.sprite.spritecollide(self, self.game.blocks, False)
+    #         if hits:
+    #             if self.vel.x > 0: # sprite moving to the right
+    #                 self.pos.x = hits[0].rect.left - self.rect.width
+    #             if self.vel.x < 0: # sprite moving to the left
+    #                 self.pos.x = hits[0].rect.right
+    #             self.vel.x = 0                         #stop moving
+    #             self.rect.x = self.pos.x
 
-            enter = pg.sprite.spritecollide(self, self.game.portals, False)
-            if enter:
-                self.rect.x = enter[0].rect.left
-                self.rect.y = enter[0].rect.top
-                self.in_portal = True
+    #         enter = pg.sprite.spritecollide(self, self.game.portals, False)
+    #         if enter:
+    #             self.rect.x = enter[0].rect.left
+    #             self.rect.y = enter[0].rect.top
+    #             self.in_portal = True
 
             
-        if dir == 'y':
-            hits = pg.sprite.spritecollide(self, self.game.blocks, False)
-            if hits:
-                if self.vel.y > 0: # sprite moving down
-                    self.pos.y = hits[0].rect.top - self.rect.width
-                if self.vel.y < 0: # sprite moving up
-                    self.pos.y = hits[0].rect.bottom
-                self.vel.y = 0                         #stop moving
-                self.rect.y = self.pos.y
+        # if dir == 'y':
+        #     hits = pg.sprite.spritecollide(self, self.game.blocks, False)
+        #     if hits:
+        #         if self.vel.y > 0: # sprite moving down
+        #             self.pos.y = hits[0].rect.top - self.rect.width
+        #         if self.vel.y < 0: # sprite moving up
+        #             self.pos.y = hits[0].rect.bottom
+        #         self.vel.y = 0                         #stop moving
+        #         self.rect.y = self.pos.y
 
-            enter = pg.sprite.spritecollide(self, self.game.portals, False)
-            if enter:
-                self.rect.x = enter[0].rect.left
-                self.rect.y = enter[0].rect.top
-                self.in_portal = True
+        #     enter = pg.sprite.spritecollide(self, self.game.portals, False)
+        #     if enter:
+        #         self.rect.x = enter[0].rect.left
+        #         self.rect.y = enter[0].rect.top
+        #         self.in_portal = True
 
     
     def jump(self):
@@ -86,9 +86,9 @@ class Player(pg.sprite.Sprite):
         self.move()
         self.pos += self.vel * self.game.dt # the speed
         self.rect.x = self.pos.x
-        self.collision('x')
+        self.game.block.collision('x')
         self.rect.y = self.pos.y
-        self.collision('y')
+        self.game.block.collision('y')
 
 #================================================================================================================================
 class Block(pg.sprite.Sprite):                      # default block is a wall
@@ -103,6 +103,27 @@ class Block(pg.sprite.Sprite):                      # default block is a wall
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+
+    def collision(self, dir):
+        if dir == 'x':
+            hits = pg.sprite.spritecollide(self.game.player, self.game.blocks, False)
+            if hits:
+                if self.game.player.vel.x > 0: # sprite moving to the right
+                    self.game.player.pos.x = hits[0].rect.left - self.game.player.rect.width
+                if self.game.player.vel.x < 0: # sprite moving to the left
+                    self.game.player.pos.x = hits[0].rect.right
+                self.game.player.vel.x = 0                         #stop moving
+                self.game.player.rect.x = self.game.player.pos.x
+
+        if dir == 'y':
+            hits = pg.sprite.spritecollide(self.game.player, self.game.blocks, False)
+            if hits:
+                if self.game.player.vel.y > 0: # sprite moving down
+                    self.game.player.pos.y = hits[0].rect.top - self.game.player.rect.width
+                if self.game.player.vel.y < 0: # sprite moving up
+                    self.game.player.pos.y = hits[0].rect.bottom
+                self.game.player.vel.y = 0                         #stop moving
+                self.game.player.rect.y = self.game.player.pos.y
 
 
 class Ledge(Block):

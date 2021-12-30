@@ -44,8 +44,9 @@ class Game:
 
         self.map.render(self)       # creates the map
         self.camera = Camera(self.map.width, self.map.height)   # spawns camera   
-
+        # print(Portal.portals)
         self.run()
+        
 
 
     def run(self):

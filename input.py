@@ -55,6 +55,9 @@ class Inputs():
                 self.game.playing = False
                 self.game.running = False
 
+            if button == pg.K_r:
+                self.game.playing = False
+
             if button == pg.K_SPACE:
                 pg.time.set_timer(JUMP_TIMER, JUMP_DELAY)
                 print("jumped")

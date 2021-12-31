@@ -51,10 +51,25 @@ class Player(pg.sprite.Sprite):
         #         self.rect.x = self.pos.x
 
             enter = pg.sprite.spritecollide(self, self.game.portals, False)
-            if enter:
+            if enter and (enter[0].mode == 'entrance' or enter[0].mode == 'entrance'):
                 self.rect.x = enter[0].rect.left
                 self.rect.y = enter[0].rect.top
                 self.in_portal = True
+            if enter and enter[0].mode == 'right':
+                if self.vel.x < 0: # sprite moving to the left
+                    self.pos.x = enter[0].rect.right
+                    self.vel.x = 0                         #stop moving
+                    self.rect.x = self.pos.x
+                    print('Rrat')
+                    
+                else:
+                    self.rect.x = enter[0].rect.left
+                    self.rect.y = enter[0].rect.top
+                    self.in_portal = True
+                
+            
+            # elif enter:
+                
 
             
 
@@ -177,9 +192,8 @@ class Portal(pg.sprite.Sprite):
 class Ledge(Portal):
     def __init__(self, game, x, y, mode):
         super().__init__(game, x, y, mode)
-        self.face = mode
 
-        
+
     def jump_over(self):
         if self.game.player.jumping == True:
             self.image.fill(BLACK)
@@ -195,19 +209,19 @@ class Ledge(Portal):
 
     def transport(self, status, player):
         
-        if self.face == "left" and status and self.activated(player):
+        if self.mode == "left" and status and self.activated(player):
             self.game.player.pos.x = self.rect.right
             self.game.player.rect.x = self.game.player.pos.x 
 
-        elif self.face == "right" and status and self.activated(player):
-            self.game.player.pos.x = self.rect.left - TILESIZE
+        elif self.mode == "right" and status and self.activated(player):
+            self.game.player.pos.x = self.rect.left
             self.game.player.rect.x = self.game.player.pos.x 
 
-        elif self.face == "up" and status and self.activated(player):
+        elif self.mode == "up" and status and self.activated(player):
             self.game.player.pos.y = self.rect.top - TILESIZE
             self.game.player.rect.y = self.game.player.pos.y 
 
-        elif self.face == "down" and status and self.activated(player):
+        elif self.mode == "down" and status and self.activated(player):
             self.game.player.pos.y = self.rect.bottom
             self.game.player.rect.y = self.game.player.pos.y 
             

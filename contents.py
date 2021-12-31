@@ -187,13 +187,13 @@ class Ledge(Portal):
         super().__init__(game, x, y, mode)
 
 
-    def jump_over(self):
-        if self.game.player.jumping == True:
-            self.image.fill(BLACK)
+    # def jump_over(self):
+    #     if self.game.player.jumping == True:
+    #         self.image.fill(BLACK)
             
-        else:
-            self.image = pg.Surface((TILESIZE, TILESIZE))
-            self.image.fill(GREEN)
+    #     else:
+    #         self.image = pg.Surface((TILESIZE, TILESIZE))
+    #         self.image.fill(GREEN)
 
     
     def activated(self, player):
@@ -223,8 +223,7 @@ class Ledge(Portal):
 
         
     def update(self):
-        self.jump_over()
+        # self.jump_over()
         self.transport(self.game.player.in_portal, self.game.player)
-        # self.collision()
-        # print("Rrat")
+
     

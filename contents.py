@@ -38,7 +38,6 @@ class Player(pg.sprite.Sprite):
             self.vel.x *= .7071
             self.vel.y *= .7071
 
-
     # def collision(self, dir):
         #     if dir == 'x':
         #     #     hits = pg.sprite.spritecollide(self, self.game.blocks, False)
@@ -90,7 +89,6 @@ class Player(pg.sprite.Sprite):
             #         self.rect.y = enter[0].rect.top
             #         self.in_portal = True
 
-    
     def jump(self):
         if self.jumping:
             self.image.fill(BLUE)
@@ -239,11 +237,11 @@ class Ledge(Portal):
     def transport(self, status, player):
         
         if self.mode == "left" and status and self.activated(player):
-            self.game.player.pos.x = self.rect.right
+            self.game.player.pos.x = self.rect.left - TILESIZE
             self.game.player.rect.x = self.game.player.pos.x 
 
         elif self.mode == "right" and status and self.activated(player):
-            self.game.player.pos.x = self.rect.left
+            self.game.player.pos.x = self.rect.right
             self.game.player.rect.x = self.game.player.pos.x 
 
         elif self.mode == "up" and status and self.activated(player):

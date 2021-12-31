@@ -35,9 +35,9 @@ class Map:
                 elif tile == "X":
                     game.portal = Portal(game, col, row, "exit")  
                 elif tile == "/":
-                    game.edge = Ledge(game, col, row, "left")
-                elif tile == "\\":
                     game.edge = Ledge(game, col, row, "right")
+                elif tile == "\\":
+                    game.edge = Ledge(game, col, row, "left")
                 elif tile == "=":
                     game.edge = Ledge(game, col, row, "up")
                 elif tile == "_":

@@ -1,6 +1,6 @@
 import pygame as pg
 from settings import *
-from contents import *
+from player import *
 
 # def player_input(key):
 #     if key.type == pg.QUIT:           # for the close button in window

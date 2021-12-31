@@ -3,8 +3,9 @@ from os import path
 import pygame as pg
 from input import *
 from settings import *
-from contents import *
+from player import *
 from tilemap import *
+from environment import *
 
 
 class Game:

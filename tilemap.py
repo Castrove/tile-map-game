@@ -1,7 +1,9 @@
 import pygame as pg
 
-from contents import *
+from player import *
 from settings import *
+from environment import *
+
 
 class Map:
     
